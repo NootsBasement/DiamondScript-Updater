@@ -8,7 +8,7 @@ finally:
 
 def GetPIDNumber():
     pid = os.getpid()
-    print("PID Number:", pid)
+    print("PID Number of this script:", pid)
     return pid
 GetPIDNumber()
 
@@ -38,14 +38,20 @@ DiamondPIDTxtFile = DiamondScriptFolderPath + "\\DiamondScriptPID.txt"
 def UpdateAndRepair():
     try:
         with open(DiamondPIDTxtFile, mode='r') as PIDtxtfile:
-            PIDNumber = PIDtxtfile.read()
+            PIDNumber = PIDtxtfile.readlines()
+            print(PIDNumber)
         KillPIDCommand = "taskkill /PID " + PIDNumber + " /F"
         os.system(KillPIDCommand)
-        print("Killed DiamondScript.py process to update!")
+        print("Killed DiamondScript.py process to check for updates!")
     except:
-        with open(DiamondPIDTxtFile, mode="w+") as PIDtxtfile:
-            PIDNumber = PIDtxtfile.read()
-        print("PID Text file has been altered or deleted, creating now.")
+        try:
+            with open(DiamondPIDTxtFile, mode="w+") as PIDtxtfile:
+                PIDNumber = PIDtxtfile.read()
+            print("PID Text file has been altered or deleted, creating now.")
+        except FileNotFoundError:
+            print("PID cant be fetched yet!")
+            pass
+        pass
 
     def Convert(string):
         list1=[]
@@ -111,13 +117,21 @@ def UpdateAndRepair():
             LocalFileDiamondScript = LocalDiamondBuild.read()
 
     if LocalFileDiamondScript == FixedGitHubDiamondScript:
+        UpdateStatusTxtFile = DiamondScriptFolderPath + "\\UpdateStatus.txt"
         print("Local DiamondScript.py is already updated, paths have been restablished if needed.")
         print("Opening DiamondScript.py")
+        with open(UpdateStatusTxtFile, mode="w+") as PIDtxtfile:
+            PIDtxtfile.write("Updated")
         os.startfile(FullDiamondScriptFolderPath)
         return True
+
     if LocalFileDiamondScript != FixedGitHubDiamondScript:
+        UpdateStatusTxtFile = DiamondScriptFolderPath+ "\\UpdateStatus.txt"
         print("Local DiamondScript.py and or paths have been fixed/updated.")
         with open(FullDiamondScriptFolderPath, mode='w+') as LocalDiamondBuild:
             LocalDiamondBuild.write(FixedGitHubDiamondScript)
+        with open(UpdateStatusTxtFile, mode="w+") as PIDtxtfile:
+            PIDtxtfile.write("Updated")
+        os.startfile(FullDiamondScriptFolderPath)
         return False
 UpdateAndRepair()
