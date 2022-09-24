@@ -122,7 +122,6 @@ def UpdateAndRepair():
         print("Opening DiamondScript.py")
         with open(UpdateStatusTxtFile, mode="w+") as PIDtxtfile:
             PIDtxtfile.write("Updated")
-        os.startfile(FullDiamondScriptFolderPath)
         return True
 
     if LocalFileDiamondScript != FixedGitHubDiamondScript:
@@ -132,6 +131,5 @@ def UpdateAndRepair():
             LocalDiamondBuild.write(FixedGitHubDiamondScript)
         with open(UpdateStatusTxtFile, mode="w+") as PIDtxtfile:
             PIDtxtfile.write("Updated")
-        os.startfile(FullDiamondScriptFolderPath)
         return False
 UpdateAndRepair()
