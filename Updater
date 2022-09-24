@@ -126,7 +126,7 @@ def UpdateAndRepair():
         return True
 
     if LocalFileDiamondScript != FixedGitHubDiamondScript:
-        UpdateStatusTxtFile = DiamondScriptFolderPath+ "\\UpdateStatus.txt"
+        UpdateStatusTxtFile = DiamondScriptFolderPath + "\\UpdateStatus.txt"
         print("Local DiamondScript.py and or paths have been fixed/updated.")
         with open(FullDiamondScriptFolderPath, mode='w+') as LocalDiamondBuild:
             LocalDiamondBuild.write(FixedGitHubDiamondScript)
